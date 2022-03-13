@@ -1,5 +1,5 @@
 import { Client } from "discord.js";
-import interactionCreate from "./interaction-create";
+import interactionCreate from "./interactionCreate";
 import ready from "./ready";
 
 export interface Event {

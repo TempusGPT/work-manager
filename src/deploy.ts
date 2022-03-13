@@ -9,7 +9,7 @@ import { clientID, guildID, token } from "./env";
     await rest.put(Routes.applicationGuildCommands(clientID, guildID), {
       body: getCommandsBody(),
     });
-    console.log("Deployed commands.");
+    console.log("Deployed commands");
   } catch (error) {
     console.error(error);
   }
