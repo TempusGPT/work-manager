@@ -1,4 +1,5 @@
 import { Client } from "discord.js";
+import interactionCreate from "./interaction-create";
 import ready from "./ready";
 
 export interface Event {
@@ -7,7 +8,7 @@ export interface Event {
   execute(...args: unknown[]): Promise<void>;
 }
 
-const events = [ready];
+const events = [ready, interactionCreate];
 
 export function subscribeEvents(client: Client) {
   for (const event of events) {

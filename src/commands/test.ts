@@ -4,7 +4,7 @@ import { Command } from ".";
 
 const builder = new SlashCommandBuilder()
   .setName("test")
-  .setDescription("이건 그저 테스트이다");
+  .setDescription("이것은 그저 테스트");
 
 async function execute(interaction: CommandInteraction) {
   await interaction.reply("test success");
