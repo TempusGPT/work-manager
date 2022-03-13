@@ -1,10 +1,7 @@
 import { Client, Intents } from "discord.js";
 import { token } from "./env";
+import { subscribeEvents } from "./events";
 
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-
-client.once("ready", () => {
-  console.log("Ready");
-});
-
+subscribeEvents(client);
 client.login(token);
