@@ -1,10 +1,14 @@
-import { model, models, Document, Schema } from "mongoose";
+import { model, Document, Model, Schema } from "mongoose";
 
 export interface WorkLogDocument extends Document {
   userID: string;
   workInTime: number;
   workOutTime: number;
   jobsDone: string;
+}
+
+interface WorkLogModel extends Model<WorkLogDocument> {
+  getCurrent: (userID: string) => Promise<WorkLogDocument | null>;
 }
 
 const schema = new Schema({
@@ -14,5 +18,8 @@ const schema = new Schema({
   jobsDone: { type: String },
 });
 
-export const WorkLog =
-  models.WorkLog ?? model<WorkLogDocument>("WorkLog", schema);
+schema.statics.getCurrent = async function (userID: string) {
+  return await this.findOne({ userID, workOutTime: undefined });
+};
+
+export const WorkLog = model<WorkLogDocument, WorkLogModel>("WorkLog", schema);
