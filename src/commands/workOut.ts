@@ -18,7 +18,21 @@ async function execute(interaction: CommandInteraction) {
     return;
   }
 
+  const jobsDone = (await interaction.channel?.messages.fetch({ limit: 1 }))
+    ?.filter((message) => message.author.id === interaction.user.id)
+    .first()?.content;
+
+  if (!jobsDone) {
+    await interaction.reply({
+      content:
+        "오늘 완료한 작업을 채널에 적어주세요! 그러면 퇴근하실 수 있습니다.",
+      ephemeral: true,
+    });
+    return;
+  }
+
   workLog.workOutTime = interaction.createdAt;
+  workLog.jobsDone = jobsDone;
   workLog.save();
   await interaction.reply(`${interaction.user.username}님이 퇴근하십니다...`);
 }
