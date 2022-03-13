@@ -9,11 +9,19 @@ export interface Command {
 
 const commands = [test];
 
-export function getCommand(name: string): Command | null {
+export function getCommand(name: string) {
   for (const command of commands) {
     if (command.builder.name === name) {
       return command;
     }
   }
   return null;
+}
+
+export function getCommandsBody() {
+  const body = [];
+  for (const command of commands) {
+    body.push(command.builder.toJSON());
+  }
+  return body;
 }
