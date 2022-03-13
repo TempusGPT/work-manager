@@ -1,6 +1,6 @@
 import { REST } from "@discordjs/rest";
 import { Routes } from "discord-api-types/rest/v9";
-import { getCommandsBody } from "./commands";
+import { getCommandsBody } from "../commands";
 import { clientID, guildID, token } from "./env";
 
 (async () => {

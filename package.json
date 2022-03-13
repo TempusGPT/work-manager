@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
-    "deploy": "ts-node src/deploy.ts"
+    "deploy": "ts-node src/utils/deploy.ts"
   },
   "repository": {
     "type": "git",
