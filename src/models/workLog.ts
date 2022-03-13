@@ -2,8 +2,8 @@ import { model, Document, Model, Schema } from "mongoose";
 
 export interface WorkLogDocument extends Document {
   userID: string;
-  workInTime: number;
-  workOutTime: number;
+  workInTime: Date;
+  workOutTime: Date;
   jobsDone: string;
 }
 
@@ -13,8 +13,8 @@ interface WorkLogModel extends Model<WorkLogDocument> {
 
 const schema = new Schema({
   userID: { type: String, required: true },
-  workInTime: { type: Number, required: true },
-  workOutTime: { type: Number },
+  workInTime: { type: Date, required: true },
+  workOutTime: { type: Date },
   jobsDone: { type: String },
 });
 

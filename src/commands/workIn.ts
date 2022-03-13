@@ -19,7 +19,7 @@ async function execute(interaction: CommandInteraction) {
 
   WorkLog.create({
     userID: interaction.user.id,
-    workInTime: interaction.createdTimestamp,
+    workInTime: interaction.createdAt,
   });
   await interaction.reply(`${interaction.user.username}님이 출근했습니다.`);
 }

@@ -18,7 +18,7 @@ async function execute(interaction: CommandInteraction) {
     return;
   }
 
-  workLog.workOutTime = interaction.createdTimestamp;
+  workLog.workOutTime = interaction.createdAt;
   workLog.save();
   await interaction.reply(`${interaction.user.username}님이 퇴근하십니다...`);
 }
