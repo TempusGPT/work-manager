@@ -3,8 +3,8 @@ import { model, Document, Model, Schema } from "mongoose";
 export interface WorkLogDocument extends Document {
   userID: string;
   workInTime: Date;
-  workOutTime: Date;
-  jobsDone: string;
+  workOutTime?: Date;
+  jobsDone?: string;
 }
 
 interface WorkLogModel extends Model<WorkLogDocument> {

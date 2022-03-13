@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
 import { Command } from ".";
-import { WorkLog } from "../models/WorkLog";
+import { WorkLog } from "../models/workLog";
 
 const builder = new SlashCommandBuilder()
   .setName("출근")
