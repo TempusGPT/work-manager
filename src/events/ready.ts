@@ -1,10 +1,11 @@
 import { Client } from "discord.js";
 import { Event } from ".";
 
-export default {
-  name: "ready",
-  once: true,
-  execute(client: Client) {
-    console.log(`Ready: ${client.user?.tag}`);
-  },
-} as Event;
+const name = "ready";
+const once = true;
+
+function execute(client: Client) {
+  console.log(`Ready: ${client.user?.tag}`);
+}
+
+export default { name, once, execute } as Event;
