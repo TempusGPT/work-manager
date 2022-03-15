@@ -14,7 +14,11 @@ const builder = new SlashCommandBuilder()
   );
 
 async function execute(interaction: CommandInteraction) {
-  await interaction.reply({ embeds: await generateEmbeds(interaction.user) });
+  const user = interaction.options.getUser("유저");
+  if (!user) {
+    throw new Error("유저 option does not exist");
+  }
+  await interaction.reply({ embeds: await generateEmbeds(user) });
 }
 
 async function generateEmbeds(user: User) {

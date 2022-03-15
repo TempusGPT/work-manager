@@ -18,9 +18,8 @@ async function execute(interaction: CommandInteraction) {
   try {
     await command.execute(interaction);
   } catch (error) {
-    console.error(error);
     await interaction.reply({
-      content: "커맨드를 실행하는 중 오류가 발생했습니다.",
+      content: `${error}`,
       ephemeral: true,
     });
   }
