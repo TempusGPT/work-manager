@@ -23,14 +23,26 @@ async function execute(interaction: CommandInteraction) {
 
 async function generateEmbeds(user: User) {
   const result = [];
-  for (const log of await WorkLog.find({ userID: user.id })) {
+  const workLogs = await WorkLog.find()
+    .where("userID")
+    .equals(user.id)
+    .exists("workOutTime", true);
+
+  for (const workLog of workLogs) {
     result.push(
       new MessageEmbed()
-        .setTitle(log.workInTime.toDateString())
-        .setDescription(log.jobsDone ?? "")
+        .setDescription(workLog.jobsDone ?? "N/A")
+        .addField("Work In", formatDate(workLog.workInTime))
+        .addField("Work Out", formatDate(workLog.workOutTime))
     );
   }
   return result;
+}
+
+function formatDate(date: Date | undefined) {
+  return date
+    ? `${date.getHours()}:${date.getMinutes()} ${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`
+    : "N/A";
 }
 
 export default { builder, execute } as Command;
