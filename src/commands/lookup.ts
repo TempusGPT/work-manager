@@ -5,7 +5,6 @@ import {
   MessageButton,
   MessageComponentInteraction,
   MessageEmbed,
-  User,
 } from "discord.js";
 import { Command } from ".";
 import { WorkLog, WorkLogDocument } from "../models/workLog";
@@ -13,6 +12,10 @@ import { WorkLog, WorkLogDocument } from "../models/workLog";
 const userOptionName = "유저";
 const previousButtonCustomID = "previous";
 const nextButtonCustomID = "next";
+
+const workLogsCount = 3;
+let currentPage: number;
+let currentWorkLogs: WorkLogDocument[];
 
 const builder = new SlashCommandBuilder()
   .setName("조회")
@@ -30,14 +33,17 @@ async function execute(interaction: CommandInteraction) {
     throw new Error("유저 option does not exist");
   }
 
-  const workLogs = await WorkLog.find()
-    .where("userID")
-    .equals(user.id)
-    .exists("workOutTime", true);
+  currentPage = 0;
+  currentWorkLogs = (
+    await WorkLog.find()
+      .where("userID")
+      .equals(user.id)
+      .exists("workOutTime", true)
+  ).reverse();
 
   await interaction.reply({
-    content: "The first",
-    embeds: await generateEmbeds(workLogs),
+    content: currentPage.toString(),
+    embeds: await generateEmbeds(),
     components: [await generateButton()],
     ephemeral: true,
   });
@@ -49,16 +55,19 @@ async function execute(interaction: CommandInteraction) {
 
   collector?.on("collect", async (i) => {
     if (i.customId === previousButtonCustomID) {
-      await previousButtonClicked(i, workLogs);
+      await previousButtonClicked(i);
     } else if (i.customId === nextButtonCustomID) {
-      await nextButtonClicked(i, workLogs);
+      await nextButtonClicked(i);
     }
   });
 }
 
-async function generateEmbeds(workLogs: WorkLogDocument[]) {
+async function generateEmbeds() {
   const result = [];
-  for (const workLog of workLogs) {
+  const start = currentPage * workLogsCount;
+  const end = (currentPage + 1) * workLogsCount;
+
+  for (const workLog of currentWorkLogs.slice(start, end)) {
     result.push(
       new MessageEmbed()
         .setDescription(workLog.jobsDone ?? "N/A")
@@ -91,23 +100,19 @@ async function generateButton() {
     );
 }
 
-async function previousButtonClicked(
-  interaction: MessageComponentInteraction,
-  workLogs: WorkLogDocument[]
-) {
+async function previousButtonClicked(interaction: MessageComponentInteraction) {
+  currentPage--;
   await interaction.update({
-    content: "A previous button was clicked!",
-    embeds: await generateEmbeds(workLogs),
+    content: currentPage.toString(),
+    embeds: await generateEmbeds(),
   });
 }
 
-async function nextButtonClicked(
-  interaction: MessageComponentInteraction,
-  workLogs: WorkLogDocument[]
-) {
+async function nextButtonClicked(interaction: MessageComponentInteraction) {
+  currentPage++;
   await interaction.update({
-    content: "A next button was clicked!",
-    embeds: await generateEmbeds(workLogs),
+    content: currentPage.toString(),
+    embeds: await generateEmbeds(),
   });
 }
 
