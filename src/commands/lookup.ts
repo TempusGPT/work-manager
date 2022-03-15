@@ -31,12 +31,25 @@ async function execute(interaction: CommandInteraction) {
 }
 
 async function generateButton() {
-  return new MessageActionRow().addComponents(
-    new MessageButton()
-      .setCustomId("close")
-      .setLabel("Close")
-      .setStyle("DANGER")
-  );
+  return new MessageActionRow()
+    .addComponents(
+      new MessageButton()
+        .setCustomId("previous")
+        .setLabel("<")
+        .setStyle("SECONDARY")
+    )
+    .addComponents(
+      new MessageButton()
+        .setCustomId("next")
+        .setLabel(">")
+        .setStyle("SECONDARY")
+    )
+    .addComponents(
+      new MessageButton()
+        .setCustomId("close")
+        .setLabel("Close")
+        .setStyle("DANGER")
+    );
 }
 
 async function generateEmbeds(user: User) {
