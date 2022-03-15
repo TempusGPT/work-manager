@@ -17,7 +17,7 @@ async function execute(interaction: CommandInteraction) {
     return;
   }
 
-  WorkLog.create({
+  await WorkLog.create({
     userID: interaction.user.id,
     workInTime: interaction.createdAt,
   });
