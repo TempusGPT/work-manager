@@ -1,5 +1,11 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, MessageEmbed, User } from "discord.js";
+import {
+  CommandInteraction,
+  MessageActionRow,
+  MessageButton,
+  MessageEmbed,
+  User,
+} from "discord.js";
 import { Command } from ".";
 import { WorkLog } from "../models/workLog";
 
@@ -18,7 +24,19 @@ async function execute(interaction: CommandInteraction) {
   if (!user) {
     throw new Error("유저 option does not exist");
   }
-  await interaction.reply({ embeds: await generateEmbeds(user) });
+  await interaction.reply({
+    embeds: await generateEmbeds(user),
+    components: [await generateButton()],
+  });
+}
+
+async function generateButton() {
+  return new MessageActionRow().addComponents(
+    new MessageButton()
+      .setCustomId("close")
+      .setLabel("Close")
+      .setStyle("DANGER")
+  );
 }
 
 async function generateEmbeds(user: User) {
