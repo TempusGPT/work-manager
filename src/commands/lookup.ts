@@ -48,10 +48,7 @@ async function execute(interaction: CommandInteraction) {
     ephemeral: true,
   });
 
-  const collector = interaction.channel?.createMessageComponentCollector({
-    filter: (i) => i.user.id === interaction.user.id,
-    time: 15000,
-  });
+  const collector = interaction.channel?.createMessageComponentCollector();
 
   collector?.on("collect", async (i) => {
     if (i.customId === previousButtonCustomID) {
