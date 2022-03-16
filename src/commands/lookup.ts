@@ -9,7 +9,7 @@ import {
 import { Command } from ".";
 import { WorkLog, WorkLogDocument } from "../models/workLog";
 
-const userOptionName = "유저";
+const userOptionName = "user";
 const previousButtonCustomID = "previous";
 const nextButtonCustomID = "next";
 
@@ -21,19 +21,19 @@ let lastPage: number;
 let currentPage: number;
 
 const builder = new SlashCommandBuilder()
-  .setName("조회")
-  .setDescription("작업 기록 조회하기")
+  .setName("lookup")
+  .setDescription("Lookup work logs")
   .addUserOption((option) =>
     option
       .setName(userOptionName)
-      .setDescription("작업 기록을 조회할 유저")
+      .setDescription("User to lookup work logs")
       .setRequired(true)
   );
 
 async function execute(interaction: CommandInteraction) {
   const user = interaction.options.getUser(userOptionName);
   if (!user) {
-    throw new Error("유저 option does not exist");
+    throw new Error(`The ${userOptionName} option does not exist`);
   }
 
   currentWorkLogs = (

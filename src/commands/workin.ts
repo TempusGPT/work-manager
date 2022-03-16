@@ -4,14 +4,15 @@ import { Command } from ".";
 import { WorkLog } from "../models/workLog";
 
 const builder = new SlashCommandBuilder()
-  .setName("출근")
-  .setDescription("내가 출근한 걸 모두에게 알리기");
+  .setName("workin")
+  .setDescription("Let everyone know I'm at work");
 
 async function execute(interaction: CommandInteraction) {
   const workLog = await WorkLog.getCurrent(interaction.user.id);
   if (workLog) {
     await interaction.reply({
-      content: "이미 출근하셨습니다. 혹시 어제 퇴근하는 걸 까먹으셨나요?",
+      content:
+        "You already used /workin. Did you forget to use /workout yesterday?",
       ephemeral: true,
     });
     return;
@@ -21,7 +22,7 @@ async function execute(interaction: CommandInteraction) {
     userID: interaction.user.id,
     workInTime: interaction.createdAt,
   });
-  await interaction.reply(`${interaction.user.username}님이 출근했습니다.`);
+  await interaction.reply(`${interaction.user.username} is here to work!`);
 }
 
 export default { builder, execute } as Command;

@@ -4,8 +4,8 @@
   "description": "",
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
-    "deploy": "ts-node src/utils/deploy.ts",
     "build": "tsc",
+    "deploy": "node dist/utils/deploy.js",
     "start": "node dist/index.js"
   },
   "repository": {

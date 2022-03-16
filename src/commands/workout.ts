@@ -4,15 +4,14 @@ import { Command } from ".";
 import { WorkLog } from "../models/workLog";
 
 const builder = new SlashCommandBuilder()
-  .setName("퇴근")
-  .setDescription("내가 퇴근하는 걸 모두에게 알리기");
+  .setName("workout")
+  .setDescription("Let everyone know I'm out of work");
 
 async function execute(interaction: CommandInteraction) {
   const workLog = await WorkLog.getCurrent(interaction.user.id);
   if (!workLog) {
     await interaction.reply({
-      content:
-        "출근도 안 하시고 퇴근하려 하시네요. 혹시 출근하는 걸 까먹으셨나요?",
+      content: "You didn't use /workin. Did you forget to use /workin today?",
       ephemeral: true,
     });
     return;
@@ -24,8 +23,7 @@ async function execute(interaction: CommandInteraction) {
 
   if (!jobsDone) {
     await interaction.reply({
-      content:
-        "오늘의 성과를 이 채널에 적어주세요! 그러면 퇴근하실 수 있습니다.",
+      content: "Send today's achievements please! Then you can use /workout.",
       ephemeral: true,
     });
     return;
@@ -34,7 +32,9 @@ async function execute(interaction: CommandInteraction) {
   workLog.workOutTime = interaction.createdAt;
   workLog.jobsDone = jobsDone;
   workLog.save();
-  await interaction.reply(`${interaction.user.username}님이 퇴근하십니다...`);
+  await interaction.reply(
+    `${interaction.user.username} is leaving the office.`
+  );
 }
 
 export default { builder, execute } as Command;

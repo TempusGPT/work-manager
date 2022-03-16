@@ -1,15 +1,15 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { Interaction } from "discord.js";
 import lookup from "./lookup";
-import workIn from "./workIn";
-import workOut from "./workOut";
+import workin from "./workin";
+import workout from "./workout";
 
 export interface Command {
   builder: SlashCommandBuilder;
   execute(interaction: Interaction): Promise<void>;
 }
 
-const commands = [workIn, workOut, lookup];
+const commands = [workin, workout, lookup];
 
 export function getCommand(name: string) {
   for (const command of commands) {
