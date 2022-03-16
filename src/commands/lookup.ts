@@ -91,12 +91,16 @@ async function generateButton() {
         .setCustomId(previousButtonCustomID)
         .setLabel("<")
         .setStyle("SECONDARY")
+        .setDisabled(currentPage <= 0)
     )
     .addComponents(
       new MessageButton()
         .setCustomId(nextButtonCustomID)
         .setLabel(">")
         .setStyle("SECONDARY")
+        .setDisabled(
+          currentPage >= Math.ceil(currentWorkLogs.length / workLogsCount) - 1
+        )
     );
 }
 
@@ -105,6 +109,7 @@ async function previousButtonClicked(interaction: MessageComponentInteraction) {
   await interaction.update({
     content: currentPage.toString(),
     embeds: await generateEmbeds(),
+    components: [await generateButton()],
   });
 }
 
@@ -113,6 +118,7 @@ async function nextButtonClicked(interaction: MessageComponentInteraction) {
   await interaction.update({
     content: currentPage.toString(),
     embeds: await generateEmbeds(),
+    components: [await generateButton()],
   });
 }
 
