@@ -14,8 +14,11 @@ const previousButtonCustomID = "previous";
 const nextButtonCustomID = "next";
 
 const workLogsCount = 3;
-let currentPage: number;
 let currentWorkLogs: WorkLogDocument[];
+
+const firstPage = 0;
+let lastPage: number;
+let currentPage: number;
 
 const builder = new SlashCommandBuilder()
   .setName("조회")
@@ -33,7 +36,6 @@ async function execute(interaction: CommandInteraction) {
     throw new Error("유저 option does not exist");
   }
 
-  currentPage = 0;
   currentWorkLogs = (
     await WorkLog.find()
       .where("userID")
@@ -41,8 +43,11 @@ async function execute(interaction: CommandInteraction) {
       .exists("workOutTime", true)
   ).reverse();
 
+  currentPage = 0;
+  lastPage = Math.ceil(currentWorkLogs.length / workLogsCount) - 1;
+
   await interaction.reply({
-    content: currentPage.toString(),
+    content: generateContent(),
     embeds: await generateEmbeds(),
     components: [await generateButton()],
     ephemeral: true,
@@ -57,6 +62,10 @@ async function execute(interaction: CommandInteraction) {
       await nextButtonClicked(i);
     }
   });
+}
+
+function generateContent() {
+  return `Page ${currentPage + 1} / ${lastPage + 1}`;
 }
 
 async function generateEmbeds() {
@@ -88,23 +97,21 @@ async function generateButton() {
         .setCustomId(previousButtonCustomID)
         .setLabel("<")
         .setStyle("SECONDARY")
-        .setDisabled(currentPage <= 0)
+        .setDisabled(currentPage <= firstPage)
     )
     .addComponents(
       new MessageButton()
         .setCustomId(nextButtonCustomID)
         .setLabel(">")
         .setStyle("SECONDARY")
-        .setDisabled(
-          currentPage >= Math.ceil(currentWorkLogs.length / workLogsCount) - 1
-        )
+        .setDisabled(currentPage >= lastPage)
     );
 }
 
 async function previousButtonClicked(interaction: MessageComponentInteraction) {
   currentPage--;
   await interaction.update({
-    content: currentPage.toString(),
+    content: generateContent(),
     embeds: await generateEmbeds(),
     components: [await generateButton()],
   });
@@ -113,7 +120,7 @@ async function previousButtonClicked(interaction: MessageComponentInteraction) {
 async function nextButtonClicked(interaction: MessageComponentInteraction) {
   currentPage++;
   await interaction.update({
-    content: currentPage.toString(),
+    content: generateContent(),
     embeds: await generateEmbeds(),
     components: [await generateButton()],
   });
