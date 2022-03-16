@@ -32,9 +32,7 @@ async function execute(interaction: CommandInteraction) {
   workLog.workOutTime = interaction.createdAt;
   workLog.jobsDone = jobsDone;
   workLog.save();
-  await interaction.reply(
-    `${interaction.user.username} is leaving the office.`
-  );
+  await interaction.reply(`${interaction.user} is leaving the office.`);
 }
 
 export default { builder, execute } as Command;

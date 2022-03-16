@@ -43,6 +43,13 @@ async function execute(interaction: CommandInteraction) {
       .exists("workOutTime", true)
   ).reverse();
 
+  if (currentWorkLogs.length === 0) {
+    return await interaction.reply({
+      content: `There is no work logs for ${user}.`,
+      ephemeral: true,
+    });
+  }
+
   currentPage = 0;
   lastPage = Math.ceil(currentWorkLogs.length / workLogsCount) - 1;
 

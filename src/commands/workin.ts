@@ -22,7 +22,7 @@ async function execute(interaction: CommandInteraction) {
     userID: interaction.user.id,
     workInTime: interaction.createdAt,
   });
-  await interaction.reply(`${interaction.user.username} is here to work!`);
+  await interaction.reply(`${interaction.user} is here to work!`);
 }
 
 export default { builder, execute } as Command;
