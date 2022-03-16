@@ -77,7 +77,7 @@ async function generateEmbeds() {
 
 function formatDate(date: Date | undefined) {
   return date
-    ? `${date.getHours()}:${date.getMinutes()} ${date.getMonth()}/${date.getDay()}/${date.getFullYear()}`
+    ? date.toLocaleString("en-US", { timeZone: "Asia/Seoul" })
     : "N/A";
 }
 
