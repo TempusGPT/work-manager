@@ -107,8 +107,8 @@ async function previousButtonClicked(interaction: MessageComponentInteraction) {
   currentPage--;
   await interaction.update({
     content: generateContent(),
-    embeds: await generateEmbeds(),
-    components: [await generateButton()],
+    embeds: generateEmbeds(),
+    components: [generateButton()],
   });
 }
 
@@ -116,8 +116,8 @@ async function nextButtonClicked(interaction: MessageComponentInteraction) {
   currentPage++;
   await interaction.update({
     content: generateContent(),
-    embeds: await generateEmbeds(),
-    components: [await generateButton()],
+    embeds: generateEmbeds(),
+    components: [generateButton()],
   });
 }
 

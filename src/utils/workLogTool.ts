@@ -5,6 +5,7 @@ const notAvailable = "N/A";
 
 export function generateEmbed(workLog: WorkLogDocument) {
   return new MessageEmbed()
+    .setTitle(workLog.id)
     .setDescription(workLog.jobsDone ?? notAvailable)
     .addField("Work In", formatDate(workLog.workInTime))
     .addField("Work Out", formatDate(workLog.workOutTime));
