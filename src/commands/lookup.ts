@@ -55,8 +55,8 @@ async function execute(interaction: CommandInteraction) {
 
   await interaction.reply({
     content: generateContent(),
-    embeds: await generateEmbeds(),
-    components: [await generateButton()],
+    embeds: generateEmbeds(),
+    components: [generateButton()],
     ephemeral: true,
   });
 
@@ -104,21 +104,29 @@ function generateButton() {
 }
 
 async function previousButtonClicked(interaction: MessageComponentInteraction) {
-  currentPage--;
-  await interaction.update({
-    content: generateContent(),
-    embeds: generateEmbeds(),
-    components: [generateButton()],
-  });
+  try {
+    currentPage--;
+    await interaction.update({
+      content: generateContent(),
+      embeds: generateEmbeds(),
+      components: [generateButton()],
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 async function nextButtonClicked(interaction: MessageComponentInteraction) {
-  currentPage++;
-  await interaction.update({
-    content: generateContent(),
-    embeds: generateEmbeds(),
-    components: [generateButton()],
-  });
+  try {
+    currentPage++;
+    await interaction.update({
+      content: generateContent(),
+      embeds: generateEmbeds(),
+      components: [generateButton()],
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export default { builder, execute } as Command;

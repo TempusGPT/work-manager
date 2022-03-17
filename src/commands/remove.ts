@@ -7,6 +7,7 @@ import {
 } from "discord.js";
 import { Command } from ".";
 import { WorkLog, WorkLogDocument } from "../models/workLog";
+import { generateEmbed } from "../utils/workLogTool";
 
 const idOptionName = "id";
 const cancelButtonCustomID = "cancel";
@@ -38,6 +39,7 @@ async function execute(interaction: CommandInteraction) {
 
   await interaction.reply({
     content: "You are about to remove the work log. Are you sure to remove?",
+    embeds: [generateEmbed(workLog)],
     components: [generateButton()],
     ephemeral: true,
   });
@@ -69,21 +71,29 @@ function generateButton() {
 }
 
 async function cancelButtonClicked(interaction: MessageComponentInteraction) {
-  await interaction.update({
-    content: "You canceled the work log removal.",
-    components: [],
-  });
+  try {
+    await interaction.update({
+      content: "You canceled the work log removal.",
+      components: [],
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 async function removeButtonClicked(
   interaction: MessageComponentInteraction,
   workLog: WorkLogDocument
 ) {
-  workLog.delete();
-  await interaction.update({
-    content: "The work log has been removed!",
-    components: [],
-  });
+  try {
+    await workLog.delete();
+    await interaction.update({
+      content: "The work log has been removed!",
+      components: [],
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export default { builder, execute } as Command;
