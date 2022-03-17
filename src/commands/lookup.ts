@@ -4,10 +4,10 @@ import {
   MessageActionRow,
   MessageButton,
   MessageComponentInteraction,
-  MessageEmbed,
 } from "discord.js";
 import { Command } from ".";
 import { WorkLog, WorkLogDocument } from "../models/workLog";
+import { generateEmbed } from "../utils/workLogTool";
 
 const userOptionName = "user";
 const previousButtonCustomID = "previous";
@@ -61,7 +61,6 @@ async function execute(interaction: CommandInteraction) {
   });
 
   const collector = interaction.channel?.createMessageComponentCollector();
-
   collector?.on("collect", async (i) => {
     if (i.customId === previousButtonCustomID) {
       await previousButtonClicked(i);
@@ -75,29 +74,18 @@ function generateContent() {
   return `Page ${currentPage + 1} / ${lastPage + 1}`;
 }
 
-async function generateEmbeds() {
+function generateEmbeds() {
   const result = [];
   const start = currentPage * workLogsCount;
   const end = (currentPage + 1) * workLogsCount;
 
   for (const workLog of currentWorkLogs.slice(start, end)) {
-    result.push(
-      new MessageEmbed()
-        .setDescription(workLog.jobsDone ?? "N/A")
-        .addField("Work In", formatDate(workLog.workInTime))
-        .addField("Work Out", formatDate(workLog.workOutTime))
-    );
+    result.push(generateEmbed(workLog));
   }
   return result;
 }
 
-function formatDate(date: Date | undefined) {
-  return date
-    ? date.toLocaleString("en-US", { timeZone: "Asia/Seoul" })
-    : "N/A";
-}
-
-async function generateButton() {
+function generateButton() {
   return new MessageActionRow()
     .addComponents(
       new MessageButton()
