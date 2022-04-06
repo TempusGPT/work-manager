@@ -1,5 +1,5 @@
-import { SlashCommandBuilder } from "@discordjs/builders";
 import { Interaction } from "discord.js";
+import { SlashCommandBuilder } from "@discordjs/builders";
 import lookup from "./lookup";
 import remove from "./remove";
 import workin from "./workin";
